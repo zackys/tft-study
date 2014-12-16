@@ -2,8 +2,8 @@ package cnv
 
 import (
 	"bufio"
-	"os"
 	"io"
+	"os"
 )
 
 type Start struct {
@@ -52,9 +52,9 @@ func (cmd Start) GoStart() <-chan string {
 
 		var strCnt int
 		bytes, err := reader.ReadBytes(delim)
-		println("**")
+		//println("**")
 		if err == nil {
-			println("***")
+			//println("***")
 			switch bytesLen := len(bytes); {
 			case bytesLen >= 2:
 				if bytes[len(bytes)-2] == '\r' {
@@ -82,8 +82,12 @@ func (cmd Start) GoStart() <-chan string {
 				out <- string(bytes[:strCnt])
 
 				bytes, err = reader.ReadBytes(delim)
-				strCnt = len(bytes) - delimLen
-				if (strCnt < 0) {
+				if err == io.EOF {
+					strCnt = len(bytes)
+				} else {
+					strCnt = len(bytes) - delimLen
+				}
+				if strCnt < 0 {
 					strCnt = 0
 				}
 			}
@@ -91,6 +95,7 @@ func (cmd Start) GoStart() <-chan string {
 			if err != io.EOF {
 				panic(err)
 			} else {
+				println(string(bytes[:strCnt]))
 				out <- string(bytes[:strCnt])
 			}
 
@@ -98,7 +103,7 @@ func (cmd Start) GoStart() <-chan string {
 		} else {
 			panic(err)
 		}
-		println(2)
+		//println(2)
 
 	}()
 	return out

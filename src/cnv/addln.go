@@ -21,6 +21,7 @@ func NewAddln(start, step int) *Addln {
 
 	cmd.current = cmd.start
 	cmd.Filter = func(line string) string {
+		println("[",line,"]")
 		ret := fmt.Sprintf("%06d%s", cmd.current, line)
 		cmd.current += cmd.step
 		return ret

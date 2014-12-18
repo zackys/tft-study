@@ -32,3 +32,5 @@ There are another Global Options:
 * -Lu: the line separator of output.txt is Unix style '\n'.
 * -Lw: the line separator of output.txt is Windows style '\r\n'.
 * -Lm: the line separator of output.txt is Mac style '\r'.
+* -J: use if charactor code of input.txt is `SJIS`
+* -j: use if charactor code of output.txt is to be `SJIS`(default output charactor code of output.txt is `UTF-8`)

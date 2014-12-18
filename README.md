@@ -1,6 +1,6 @@
 tft
 ====
-Text file Filter Tools.
+Text file Filter Tools. -- now Beta version.
 
 Usage
 -----

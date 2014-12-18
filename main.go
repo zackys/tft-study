@@ -1,13 +1,12 @@
 package main
 
 import (
-	. "cnv"
 	"github.com/codegangsta/cli"
 	"os"
 	"strings"
 )
 
-var filters map[string]Filter = map[string]Filter{}
+var filters map[string]GoFilterer = map[string]GoFilterer{}
 
 var aa []*cli.App = []*cli.App{
 	func() *cli.App {
@@ -29,7 +28,7 @@ var aa []*cli.App = []*cli.App{
 		addln.Action = func(c *cli.Context) {
 			start := c.Int("start")
 			step := c.Int("step")
-			filters["addln"] = NewAddln(start, step)
+			filters["addln"] = NewAddlnFilter(start, step)
 		}
 
 		return addln
@@ -48,55 +47,11 @@ var aa []*cli.App = []*cli.App{
 		}
 		rmln.Action = func(c *cli.Context) {
 			col := c.Int("col")
-			filters["rmln"] = NewRmln(col)
+			filters["rmln"] = NewRmlnFilter(col)
 		}
 
 		return rmln
 	}(),
-}
-
-func newAddlnApp() *cli.App {
-	addln := cli.NewApp()
-	addln.Name = "addln"
-	addln.Usage = "filter for adding LineNumber"
-	addln.Flags = []cli.Flag{
-		cli.IntFlag{
-			Name:  "start",
-			Value: 100000,
-			Usage: "start of LineNumper",
-		},
-		cli.IntFlag{
-			Name:  "step",
-			Value: 10,
-			Usage: "step of LineNumber",
-		},
-	}
-	addln.Action = func(c *cli.Context) {
-		start := c.Int("start")
-		step := c.Int("step")
-		filters["addln"] = NewAddln(start, step)
-	}
-
-	return addln
-}
-
-func newRemlnApp() *cli.App {
-	rmln := cli.NewApp()
-	rmln.Name = "rmln"
-	rmln.Usage = "filter as adding LineNumber"
-	rmln.Flags = []cli.Flag{
-		cli.IntFlag{
-			Name:  "col",
-			Value: 6,
-			Usage: "language for the greeting",
-		},
-	}
-	rmln.Action = func(c *cli.Context) {
-		col := c.Int("col")
-		filters["rmln"] = NewRmln(col)
-	}
-
-	return rmln
 }
 
 func main() {
@@ -112,7 +67,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "filter, f",
-			Value: "rmln addln",
+			Value: "",
 			Usage: "language for the greeting",
 		},
 		cli.BoolFlag{
@@ -147,7 +102,7 @@ func main() {
 		}
 
 		var compose <-chan string
-		compose = NewStart(infilename).GoStart()
+		compose = NewInput(infilename).GoStart()
 
 		if c.Bool("J") {
 			compose = NewS2W8().GoFilter(compose)
@@ -179,15 +134,6 @@ func main() {
 		} else if c.Bool("Lm") {
 			println("Lw!")
 			compose = NewLw().GoFilter(compose)
-		} else {
-			switch DelimType {
-			case Lu:
-				compose = NewLu().GoFilter(compose)
-			case Lw:
-				compose = NewLw().GoFilter(compose)
-			case Lm:
-				compose = NewLm().GoFilter(compose)
-			}
 		}
 
 		if c.Bool("j") {
@@ -195,7 +141,7 @@ func main() {
 			compose = NewW82S().GoFilter(compose)
 		}
 
-		compose = NewEnd(outfilename).GoEnd(compose)
+		compose = NewOutput(outfilename).GoEnd(compose)
 		<-compose
 	}
 

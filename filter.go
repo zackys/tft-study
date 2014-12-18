@@ -1,22 +1,24 @@
-package cnv
+package main
 
 import (
+
 )
 
-type Filter interface {
+////
+
+type GoFilterer interface {
 	GoFilter(in <-chan string) <-chan string
 }
 
-type FilterCmd struct {
-	Filter func(string) string
+type Filter struct {
+	Apply func(string) string
 }
 
-func (cmd FilterCmd) GoFilter(in <-chan string) <-chan string {
+func (fltr *Filter) GoFilter(in <-chan string) <-chan string {
 	out := make(chan string)
-	println("*1")
 	go func() {
 		for str := range in {
-			line := cmd.Filter(str)
+			line := fltr.Apply(str)
 			//println(line)
 			out <- line
 			//out <- cmd.Filter(str)

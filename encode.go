@@ -1,9 +1,8 @@
-package cnv
+package main
 
 import (
 	"code.google.com/p/go.text/encoding/japanese"
 	"code.google.com/p/go.text/transform"
-	//"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -27,26 +26,24 @@ func SJIS_to_UTF8(str string) (string, error) {
         return string(ret), err
 }
 
-func NewW82S() FilterCmd {
-	cmd := FilterCmd {
+func NewW82S() *Filter {
+	fltr := &Filter {
 	}
 
-	cmd.Filter = func(line string) string {
+	fltr.Apply = func(line string) string {
 		ret, _ := UTF8_to_SJIS(line)
-		//fmt.Print(ret)
 		return ret
 	}
-	return cmd
+	return fltr
 }
 
-func NewS2W8() FilterCmd {
-	cmd := FilterCmd {
+func NewS2W8() *Filter {
+	fltr := &Filter {
 	}
 
-	cmd.Filter = func(line string) string {
+	fltr.Apply = func(line string) string {
 		ret, _ := SJIS_to_UTF8(line)
-		//fmt.Print(ret)
 		return ret
 	}
-	return cmd
+	return fltr
 }

@@ -34,3 +34,7 @@ There are another Global Options:
 * -Lm: the line separator of output.txt is Mac style '\r'.
 * -J: use if charactor code of input.txt is `SJIS`
 * -j: use if charactor code of output.txt is to be `SJIS`(default output charactor code of output.txt is `UTF-8`)
+
+```
+tfft -J -j -Lw -filter "rmln -col 6 | addln -start 200000 -step 20" input.txt output.txt
+```

@@ -23,14 +23,14 @@ func checkLs(bytes []byte) {
 	switch bytesLen := len(bytes); {
 	case bytesLen >= 2:
 		if bytes[len(bytes)-2] == '\r' {
-			println("delim = '\\r\\n'")
+			//println("delim = '\\r\\n'")
 			ls = Lw
 		} else {
-			println("delim = '\\n'")
+			//println("delim = '\\n'")
 			ls = Lu
 		}
 	case bytesLen == 1:
-		println("delim = '\\n'")
+		//println("delim = '\\n'")
 		ls = Lu
 	case bytesLen == 0:
 		ls = L0
@@ -50,7 +50,7 @@ func (cmd *Input) GoStart() <-chan string {
 		var fin *os.File
 		var err error
 
-		println("[", cmd.fname, "]")
+		//println("[", cmd.fname, "]")
 		if len(cmd.fname) < 1 {
 			fin = os.Stdin
 			println(0)

@@ -113,7 +113,7 @@ func main() {
 		for _, f := range pp {
 			ff := strings.Trim(f, " ")
 
-			println("filter: ", ff)
+			//println("filter: ", ff)
 			subCmd := strings.Split(ff, " ")[0]
 			subApp, ok := subApps[subCmd]
 			if ok {
